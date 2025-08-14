@@ -6,6 +6,19 @@
   --text-dark: #111827;
   --text-light: #6b7280;
   --white: #ffffff;
+
+  /* utility palette */
+  --surface: #ffffff;
+  --border: #e5e7eb;
+  --muted: #f3f4f6;
+  --success: #10b981;
+  --error: #ef4444;
+  --info: #3b82f6;
+  --warning: #f59e0b;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.06);
+  --shadow-md: 0 4px 10px rgba(0,0,0,.10);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,.15);
 }
 
 * {
@@ -32,6 +45,8 @@
 
 body {
   font-family: "Roboto", sans-serif;
+  color: var(--text-dark);
+  background: var(--white);
 }
 
 .container {
@@ -199,3 +214,311 @@ nav {
     grid-area: 1/1/2/2;
   }
 }
+
+/* ========================= */
+/* Utilities & Components    */
+/* ========================= */
+
+/* Focus visibility for keyboard users */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--primary-color) 60%, white);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Screen-reader only content helper */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Spacing utilities (minimal set) */
+.mt-1 { margin-top: .25rem; }
+.mt-2 { margin-top: .5rem; }
+.mt-3 { margin-top: .75rem; }
+.mt-4 { margin-top: 1rem; }
+.mb-1 { margin-bottom: .25rem; }
+.mb-2 { margin-bottom: .5rem; }
+.mb-3 { margin-bottom: .75rem; }
+.mb-4 { margin-bottom: 1rem; }
+.p-2 { padding: .5rem; }
+.p-3 { padding: .75rem; }
+.p-4 { padding: 1rem; }
+
+/* Flexbox utilities (small set) */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-1 { gap: .25rem; }
+.gap-2 { gap: .5rem; }
+.gap-3 { gap: .75rem; }
+.gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
+.gap-8 { gap: 2rem; }
+
+/* Grid utilities */
+.grid { display: grid; gap: 1rem; }
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+/* Responsive grid helpers (mobile-first) */
+@media (min-width: 640px) {
+  .sm-grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sm-grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 900px) {
+  .md-grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .md-grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .md-grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (min-width: 1200px) {
+  .lg-grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lg-grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* Display helpers */
+.hide-mobile { display: none !important; }
+@media (min-width: 640px) {
+  .hide-mobile { display: initial !important; }
+  .show-mobile { display: none !important; }
+}
+
+/* Shadows */
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+
+/* Cards */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+.card-header {
+  padding: 1rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-weight: 500;
+  color: var(--text-dark);
+  background: #fafafa;
+}
+.card-body { padding: 1rem; color: var(--text-dark); }
+.card-footer {
+  padding: .75rem 1rem;
+  border-top: 1px solid var(--border);
+  background: #fafafa;
+}
+
+/* Buttons variants (optional) */
+.btn-secondary {
+  background: var(--text-light);
+  color: #fff;
+}
+.btn-secondary:hover {
+  background: #4b5563;
+}
+
+/* Modal shell (overlay + dialog) */
+@keyframes modal-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes modal-pop {
+  from { transform: translateY(10px) scale(.98); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  background: rgba(17, 24, 39, 0.5);
+  z-index: 50;
+  overflow: auto;
+  padding: 1rem;
+}
+.modal.is-open { display: block; animation: modal-fade .15s ease-out; }
+
+/* Dialog base – width can be overridden inline or by extra classes */
+.modal__dialog {
+  width: 100%;
+  max-width: 560px;
+  margin: 10vh auto;
+  background: var(--surface);
+  color: var(--text-dark);
+  border-radius: 10px;
+  box-shadow: var(--shadow-lg);
+  padding: 1rem;
+  animation: modal-pop .18s ease-out;
+}
+
+/* Drawer (Help) – off-canvas right, mobile-first */
+@keyframes drawer-in {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0%); }
+}
+@keyframes drawer-out {
+  from { transform: translateX(0%); }
+  to { transform: translateX(100%); }
+}
+
+/* The aside acts as the overlay and two direct children form the panel */
+.help-drawer {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 60;
+  background: rgba(17, 24, 39, 0.5);
+  /* Create a two-column grid: overlay tap area + panel */
+  grid-template-columns: 1fr minmax(300px, 420px);
+  align-content: start;
+  overflow: hidden;
+  pointer-events: none; /* disabled until open */
+}
+.help-drawer.is-open {
+  display: grid;
+  pointer-events: auto;
+}
+
+/* Panel pieces sit in the second column to look like one sheet */
+.help-drawer__header,
+.help-drawer__content {
+  grid-column: 2;
+  background: var(--surface);
+  color: var(--text-dark);
+  border-left: 1px solid var(--border);
+  box-shadow: -6px 0 24px rgba(0,0,0,.08);
+  transform: translateX(100%);
+  will-change: transform;
+}
+.help-drawer.is-open .help-drawer__header,
+.help-drawer.is-open .help-drawer__content {
+  transform: translateX(0%);
+  animation: drawer-in .18s ease-out;
+}
+.help-drawer__content {
+  max-height: calc(100vh - 64px);
+  overflow: auto;
+  padding-bottom: 1rem;
+}
+
+/* Accordion (for FAQ and other collapsibles) */
+.accordion { display: grid; gap: .75rem; }
+.accordion-item {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.accordion-trigger {
+  width: 100%;
+  text-align: left;
+  padding: .85rem 1rem;
+  background: transparent;
+  border: 0;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.accordion-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .2s ease;
+  will-change: max-height;
+  padding: 0 1rem;
+}
+.accordion-item.is-open .accordion-panel,
+.accordion-trigger[aria-expanded="true"] + .accordion-panel {
+  max-height: 360px; /* sufficient for short answers; JS can toggle to 'auto' if needed */
+  padding-bottom: 1rem;
+}
+
+/* FAQ placeholder item styling to match cards */
+.faq-item {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Toasts */
+@keyframes toast-in {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes toast-out {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(10px); opacity: 0; }
+}
+
+.toast-container {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  display: grid;
+  gap: .5rem;
+  z-index: 70;
+  width: min(92vw, 380px);
+}
+
+.toast {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: .5rem .75rem;
+  align-items: start;
+  background: var(--surface);
+  color: var(--text-dark);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--primary-color);
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+  padding: .75rem .75rem .75rem .75rem;
+  animation: toast-in .18s ease-out;
+}
+.toast--success { border-left-color: var(--success); }
+.toast--error   { border-left-color: var(--error); }
+.toast--info    { border-left-color: var(--info); }
+.toast--warning { border-left-color: var(--warning); }
+
+.toast__icon { font-size: 1.25rem; line-height: 1; }
+.toast__title { font-weight: 600; }
+.toast__message { color: var(--text-light); }
+.toast__close {
+  background: transparent; border: 0; cursor: pointer; color: var(--text-light);
+}
+.toast.is-hiding { animation: toast-out .15s ease-in forwards; }
+
+/* Form field defaults for better baseline look */
+input, select, textarea {
+  font: inherit;
+  color: inherit;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: .6rem .7rem;
+}
+input::placeholder, textarea::placeholder {
+  color: #9ca3af;
+}
+
+/* Subtle container section spacing helper */
+.section {
+  padding: 2rem 1rem;
+}
+
+/* Utilities end */
