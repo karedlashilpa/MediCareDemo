@@ -12,19 +12,22 @@
   </head>
   <body>
     <div class="container">
+      <!-- Navigation (preserved structure; links updated to new anchors) -->
       <nav>
         <div class="nav__logo">MEDIBuddy</div>
         <ul class="nav__links">
-          <li class="link"><a href="#">Home</a></li>
-          <li class="link"><a href="#">About Us</a></li>
-          <li class="link"><a href="#">Courses</a></li>
-          <li class="link"><a href="#">Pages</a></li>
-          <li class="link"><a href="#">Blog</a></li>
-          <li class="link"><a href="#">Contact</a></li>
+          <li class="link"><a href="#home">Home</a></li>
+          <li class="link"><a href="#our-doctors">Our Doctors</a></li>
+          <li class="link"><a href="#book-appointment">Appointment</a></li>
+          <li class="link"><a href="#faq">FAQ</a></li>
+          <li class="link"><a href="#help" id="help-drawer-trigger">Help</a></li>
+          <li class="link"><a href="#footer">Contact</a></li>
         </ul>
-        <button class="btn">Register Now</button>
+        <button class="btn" id="open-auth-modal" type="button">Register Now</button>
       </nav>
-      <header class="header">
+
+      <!-- Header (preserved) -->
+      <header id="home" class="header">
         <div class="content">
           <h1><span>Get Quick</span><br />Medical Services</h1>
           <p>
@@ -34,7 +37,7 @@
             receive quick medical services can significantly impact the outcome
             of a situation.
           </p>
-          <button class="btn">Get Services</button>
+          <a class="btn" href="#book-appointment">Get Services</a>
         </div>
         <div class="image">
           <span class="image__bg"></span>
@@ -60,6 +63,228 @@
           </div>
         </div>
       </header>
+
+      <!-- Main sections placeholders -->
+      <main>
+        <!-- Our Doctors directory -->
+        <section id="our-doctors" aria-labelledby="our-doctors-title" style="padding: 2rem 1rem;">
+          <h2 id="our-doctors-title" style="margin-bottom: 1rem;">Our Doctors</h2>
+          <p style="color: #6b7280; margin-bottom: 1rem;">
+            Explore our specialists. This section will dynamically render a directory of doctors from the database.
+          </p>
+          <!-- Admin-only control (visibility/permission handled via JS) -->
+          <button class="btn" id="open-add-doctor-modal" type="button" aria-controls="add-doctor-modal" aria-expanded="false">
+            <i class="ri-user-add-line" aria-hidden="true"></i> Add Doctor
+          </button>
+          <div id="doctors-list" role="list" aria-live="polite" aria-busy="false" style="margin-top: 1.5rem;">
+            <!-- Cards will be dynamically injected here by js/doctors.js -->
+          </div>
+        </section>
+
+        <!-- Appointment booking form -->
+        <section id="book-appointment" aria-labelledby="book-appointment-title" style="padding: 2rem 1rem;">
+          <h2 id="book-appointment-title" style="margin-bottom: 1rem;">Book an Appointment</h2>
+          <p style="color: #6b7280; margin-bottom: 1rem;">
+            Fill in the form to schedule your visit. Submissions will be handled with Supabase.
+          </p>
+          <form id="appointment-form" novalidate>
+            <div style="display:grid; gap:1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); max-width:800px;">
+              <label style="display:flex; flex-direction:column;">
+                <span>Name</span>
+                <input name="name" type="text" placeholder="Full name" required />
+              </label>
+              <label style="display:flex; flex-direction:column;">
+                <span>Email</span>
+                <input name="email" type="email" placeholder="you@example.com" required />
+              </label>
+              <label style="display:flex; flex-direction:column;">
+                <span>Phone</span>
+                <input name="phone" type="tel" placeholder="+1 555 000 0000" />
+              </label>
+              <label style="display:flex; flex-direction:column;">
+                <span>Doctor</span>
+                <select name="doctorId" id="appointment-doctor" required>
+                  <option value="">Select a doctor...</option>
+                  <!-- Populated from js/doctors.js -->
+                </select>
+              </label>
+              <label style="display:flex; flex-direction:column;">
+                <span>Date</span>
+                <input name="date" type="date" required />
+              </label>
+              <label style="display:flex; flex-direction:column;">
+                <span>Time</span>
+                <input name="time" type="time" required />
+              </label>
+              <label style="display:flex; flex-direction:column; grid-column: 1 / -1;">
+                <span>Notes</span>
+                <textarea name="notes" rows="4" placeholder="Reason for visit or special notes"></textarea>
+              </label>
+            </div>
+            <div style="margin-top: 1rem;">
+              <button class="btn" type="submit" id="submit-appointment">Submit Appointment</button>
+            </div>
+            <div id="appointment-status" role="status" aria-live="polite" style="margin-top:0.75rem; color:#6b7280;"></div>
+          </form>
+        </section>
+
+        <!-- FAQ section -->
+        <section id="faq" aria-labelledby="faq-title" style="padding: 2rem 1rem;">
+          <h2 id="faq-title" style="margin-bottom: 1rem;">Frequently Asked Questions</h2>
+          <div id="faq-list" role="list" style="display:grid; gap:1rem; max-width: 900px;">
+            <!-- FAQ items will be injected by js/faq.js -->
+            <article role="listitem" class="faq-item" data-faq-id="placeholder">
+              <h3 style="font-size:1.1rem;">How do I book an appointment?</h3>
+              <p style="color:#6b7280;">Use the form in the Appointment section above. We will confirm your request shortly.</p>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <!-- Help Drawer (off-canvas) -->
+      <aside id="help" class="help-drawer" aria-hidden="true" aria-labelledby="help-title" role="complementary" style="display:none;">
+        <div class="help-drawer__header" style="display:flex; align-items:center; justify-content:space-between; padding:1rem;">
+          <h2 id="help-title" style="margin:0;">Need Help?</h2>
+          <button id="close-help-drawer" type="button" aria-label="Close help drawer" class="btn" style="padding:0.5rem 0.75rem;">
+            <i class="ri-close-line" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="help-drawer__content" style="padding: 0 1rem 1rem;">
+          <p style="color:#6b7280;">
+            Reach us quickly using the options below. This drawer can be enhanced to support chat or quick callbacks.
+          </p>
+          <ul style="list-style:none; padding-left:0; display:grid; gap:0.5rem;">
+            <li><i class="ri-phone-line" aria-hidden="true"></i> <a href="tel:+15550000000">+1 (555) 000-0000</a></li>
+            <li><i class="ri-mail-line" aria-hidden="true"></i> <a href="mailto:support@medibuddy.demo">support@medibuddy.demo</a></li>
+            <li><i class="ri-question-answer-line" aria-hidden="true"></i> <a href="#faq">Browse FAQs</a></li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Footer -->
+      <footer id="footer" style="padding: 2rem 1rem;">
+        <div style="display:flex; flex-wrap:wrap; gap:2rem; align-items:flex-start; justify-content:space-between;">
+          <div>
+            <strong>MEDIBuddy</strong>
+            <p style="color:#6b7280; margin-top:0.5rem;">A modern healthcare landing experience.</p>
+          </div>
+          <nav aria-label="Footer navigation">
+            <ul style="list-style:none; padding-left:0; display:grid; gap:0.5rem;">
+              <li><a href="#our-doctors">Doctors</a></li>
+              <li><a href="#book-appointment">Appointment</a></li>
+              <li><a href="#faq">FAQ</a></li>
+              <li><a href="#help">Help</a></li>
+            </ul>
+          </nav>
+        </div>
+        <p style="color:#6b7280; margin-top:1rem;">© <span id="year"></span> MEDIBuddy. All rights reserved.</p>
+      </footer>
     </div>
+
+    <!-- Modals -->
+
+    <!-- Auth Modal (Sign In / Sign Up) -->
+    <div id="auth-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title" aria-describedby="auth-modal-desc" style="display:none;">
+      <div class="modal__dialog" role="document" style="max-width: 520px; margin: 10vh auto; background: #fff; border-radius: 8px; padding: 1rem;">
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <h2 id="auth-modal-title" style="margin:0;">Welcome</h2>
+          <button id="close-auth-modal" type="button" class="btn" style="padding:0.5rem 0.75rem;" aria-label="Close authentication modal">
+            <i class="ri-close-line" aria-hidden="true"></i>
+          </button>
+        </div>
+        <p id="auth-modal-desc" style="color:#6b7280;">Sign in or create an account to manage appointments.</p>
+
+        <div role="tablist" aria-label="Authentication tabs" style="display:flex; gap:0.5rem; margin:0.5rem 0 1rem;">
+          <button type="button" id="tab-signin" role="tab" aria-controls="panel-signin" aria-selected="true" class="btn">Sign In</button>
+          <button type="button" id="tab-signup" role="tab" aria-controls="panel-signup" aria-selected="false" class="btn" style="background:#6b7280;">Sign Up</button>
+        </div>
+
+        <section id="panel-signin" role="tabpanel" aria-labelledby="tab-signin">
+          <form id="signin-form" novalidate style="display:grid; gap:0.75rem;">
+            <label style="display:flex; flex-direction:column;">
+              <span>Email</span>
+              <input type="email" name="email" placeholder="you@example.com" required />
+            </label>
+            <label style="display:flex; flex-direction:column;">
+              <span>Password</span>
+              <input type="password" name="password" placeholder="••••••••" required />
+            </label>
+            <button class="btn" type="submit">Sign In</button>
+            <div id="signin-status" role="status" aria-live="polite" style="color:#6b7280;"></div>
+          </form>
+        </section>
+
+        <section id="panel-signup" role="tabpanel" aria-labelledby="tab-signup" hidden>
+          <form id="signup-form" novalidate style="display:grid; gap:0.75rem;">
+            <label style="display:flex; flex-direction:column;">
+              <span>Email</span>
+              <input type="email" name="email" placeholder="you@example.com" required />
+            </label>
+            <label style="display:flex; flex-direction:column;">
+              <span>Password</span>
+              <input type="password" name="password" placeholder="••••••••" required />
+            </label>
+            <button class="btn" type="submit">Create Account</button>
+            <div id="signup-status" role="status" aria-live="polite" style="color:#6b7280;"></div>
+          </form>
+        </section>
+      </div>
+    </div>
+
+    <!-- Add Doctor Modal (Admin only) -->
+    <div id="add-doctor-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="add-doctor-title" aria-describedby="add-doctor-desc" style="display:none;">
+      <div class="modal__dialog" role="document" style="max-width: 640px; margin: 10vh auto; background: #fff; border-radius: 8px; padding: 1rem;">
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <h2 id="add-doctor-title" style="margin:0;">Add Doctor</h2>
+          <button id="close-add-doctor-modal" type="button" class="btn" style="padding:0.5rem 0.75rem;" aria-label="Close add doctor modal">
+            <i class="ri-close-line" aria-hidden="true"></i>
+          </button>
+        </div>
+        <p id="add-doctor-desc" style="color:#6b7280;">Add a new doctor profile to the directory. Access restricted to admins.</p>
+        <form id="add-doctor-form" novalidate style="display:grid; gap:0.75rem;">
+          <div style="display:grid; gap:0.75rem; grid-template-columns: repeat(2, minmax(0, 1fr));">
+            <label style="display:flex; flex-direction:column;">
+              <span>Full Name</span>
+              <input name="name" type="text" placeholder="Dr. Jane Smith" required />
+            </label>
+            <label style="display:flex; flex-direction:column;">
+              <span>Specialty</span>
+              <input name="specialty" type="text" placeholder="Cardiology" required />
+            </label>
+          </div>
+          <label style="display:flex; flex-direction:column;">
+            <span>Profile Image URL</span>
+            <input name="imageUrl" type="url" placeholder="https://..." />
+          </label>
+          <label style="display:flex; flex-direction:column;">
+            <span>Bio</span>
+            <textarea name="bio" rows="4" placeholder="Short professional bio..."></textarea>
+          </label>
+          <div style="display:flex; gap:0.5rem; align-items:center;">
+            <label style="display:flex; align-items:center; gap:0.5rem;">
+              <input type="checkbox" name="acceptingPatients" />
+              <span>Accepting new patients</span>
+            </label>
+          </div>
+          <div>
+            <button class="btn" type="submit">Save Doctor</button>
+          </div>
+          <div id="add-doctor-status" role="status" aria-live="polite" style="color:#6b7280;"></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- JS Modules -->
+    <script>
+      // small inline to set the current year in footer without modules
+      (function(){var y=document.getElementById('year'); if(y){ y.textContent = new Date().getFullYear(); }})();
+    </script>
+    <script type="module" src="js/supabaseClient.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/appointments.js"></script>
+    <script type="module" src="js/doctors.js"></script>
+    <script type="module" src="js/faq.js"></script>
+    <script type="module" src="js/helpDrawer.js"></script>
+    <script type="module" src="js/main.js"></script>
   </body>
 </html>
