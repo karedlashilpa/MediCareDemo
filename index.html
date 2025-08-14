@@ -252,10 +252,16 @@
               <input name="specialty" type="text" placeholder="Cardiology" required />
             </label>
           </div>
-          <label style="display:flex; flex-direction:column;">
-            <span>Profile Image URL</span>
-            <input name="imageUrl" type="url" placeholder="https://..." />
-          </label>
+          <div style="display:grid; gap:0.75rem; grid-template-columns: repeat(2, minmax(0, 1fr));">
+            <label style="display:flex; flex-direction:column;">
+              <span>Profile Image URL</span>
+              <input name="imageUrl" type="url" placeholder="https://..." />
+            </label>
+            <label style="display:flex; flex-direction:column;">
+              <span>Or Upload Image</span>
+              <input name="image" type="file" accept="image/*" />
+            </label>
+          </div>
           <label style="display:flex; flex-direction:column;">
             <span>Bio</span>
             <textarea name="bio" rows="4" placeholder="Short professional bio..."></textarea>

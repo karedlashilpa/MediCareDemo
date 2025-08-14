@@ -521,4 +521,105 @@ input::placeholder, textarea::placeholder {
   padding: 2rem 1rem;
 }
 
+/* Doctors directory specific styles */
+.doctor-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.doctor-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.doctor-card img {
+  transition: transform 0.3s ease;
+}
+
+.doctor-card:hover img {
+  transform: scale(1.05);
+}
+
+/* Search and filter styles */
+#doctors-search-container {
+  background: var(--muted);
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+#doctors-search-container label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+#doctors-search, #doctors-specialty-filter {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#doctors-search:focus, #doctors-specialty-filter:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 20%, transparent);
+}
+
+/* Load more button styles */
+#load-more-doctors {
+  background: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  transition: all 0.3s ease;
+}
+
+#load-more-doctors:hover {
+  background: var(--primary-color);
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* Responsive adjustments for doctors grid */
+@media (max-width: 640px) {
+  #doctors-search-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .doctor-card {
+    max-width: none;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 900px) {
+  .sm-grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1200px) {
+  .md-grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .lg-grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* File input styling */
+input[type="file"] {
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+}
+
+input[type="file"]:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 20%, transparent);
+}
+
 /* Utilities end */
