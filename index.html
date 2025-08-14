@@ -279,6 +279,29 @@
       // small inline to set the current year in footer without modules
       (function(){var y=document.getElementById('year'); if(y){ y.textContent = new Date().getFullYear(); }})();
     </script>
+    
+    <!-- Supabase Configuration -->
+    <script>
+      // Configure Supabase from environment or use placeholder
+      // In production, these should come from environment variables
+      window.__SUPABASE_CONFIG__ = {
+        url: window.location.hostname === 'localhost' 
+          ? 'YOUR_SUPABASE_URL_HERE' 
+          : (window.ENV && window.ENV.SUPABASE_URL) || 'YOUR_SUPABASE_URL_HERE',
+        anonKey: window.location.hostname === 'localhost'
+          ? 'YOUR_SUPABASE_ANON_KEY_HERE'
+          : (window.ENV && window.ENV.SUPABASE_ANON_KEY) || 'YOUR_SUPABASE_ANON_KEY_HERE'
+      };
+      
+      // For development: check if using placeholder values
+      if (window.__SUPABASE_CONFIG__.url === 'YOUR_SUPABASE_URL_HERE') {
+        console.warn('[Supabase] Using placeholder configuration. Please set up your Supabase credentials.');
+        console.info('[Supabase] See assets/supabase.md for setup instructions.');
+      }
+    </script>
+    <!-- Load Supabase JS library -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    
     <script type="module" src="js/supabaseClient.js"></script>
     <script type="module" src="js/auth.js"></script>
     <script type="module" src="js/appointments.js"></script>
